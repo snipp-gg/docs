@@ -80,6 +80,10 @@
     "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
   },
   "footer": {
-    "socials": {}
+    "socials": {
+      "discord": "https://snipp.gg/discord",
+      "github": "https://snipp.gg/github",
+      "x": "https://snipp.gg/x"
+    }
   }
 }
