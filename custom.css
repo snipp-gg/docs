@@ -47,3 +47,7 @@ footer span:has(a[href*="mintlify"]) {
 .bg-primary-dark {
   background-color: #232323 !important;
 }
+
+.dark\:text-primary-light:is(.dark *) {
+  color: #ffffff !important;
+}
