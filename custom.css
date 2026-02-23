@@ -38,18 +38,12 @@ footer span:has(a[href*="mintlify"]) {
   --color-primary-light: #404040 !important;
 }
 
-html:not([data-theme="dark"]) a[href="https://snipp.gg"],
-[data-theme="light"] a[href="https://snipp.gg"] {
-  color: black !important;
-}
-
-html:not([data-theme="dark"]) a[href="https://snipp.gg"] *,
-[data-theme="light"] a[href="https://snipp.gg"] * {
-  color: black !important;
-}
-
 [data-theme="dark"] {
   --color-primary: #ffffff !important;
-  --color-primary-dark: #ffffff !important;
+  --color-primary-dark: #020202 !important;
   --color-primary-light: #a3a3a3 !important;
+}
+
+.bg-primary-dark {
+  background-color: #232323 !important;
 }
