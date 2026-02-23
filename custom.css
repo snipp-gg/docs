@@ -19,7 +19,6 @@ main {
   padding-bottom: 4rem;
 }
 
-
 footer a[href*="mintlify"],
 footer p:has(a[href*="mintlify"]),
 footer div:has(a[href*="mintlify"]),
