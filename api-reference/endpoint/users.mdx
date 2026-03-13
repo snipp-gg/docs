@@ -2,3 +2,30 @@
 title: "Get user"
 openapi: "GET /users/{id}"
 ---
+
+Use this endpoint to fetch either your own profile (`@me`) or another user's public profile.
+
+## Behavior
+
+- `id=@me` returns your full account profile, including `key`, `keyHasUploadsAccess`, and `uploads`.
+- `id=<userId>` returns a public-safe profile for that user.
+- `badges` is always included and follows this order: `verified`, `staff`, `partner`, `bugHunterTier`, `translator`, `plus`.
+- `includePosts` controls `publicUploads`.
+- `includePosts` defaults to `false` for `@me` and `true` for non-self requests.
+- `postsLimit` limits `publicUploads` to `1-50` (default `50`).
+
+## Examples
+
+Fetch your own profile:
+
+```bash
+curl -X GET "https://api.snipp.gg/users/@me" \
+  -H "api-key: YOUR_API_KEY"
+```
+
+Fetch another profile with a smaller public uploads payload:
+
+```bash
+curl -X GET "https://api.snipp.gg/users/USER_ID?includePosts=true&postsLimit=10" \
+  -H "api-key: YOUR_API_KEY"
+```

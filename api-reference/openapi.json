@@ -19,7 +19,7 @@
     "/users/{id}": {
       "get": {
         "summary": "Get user",
-        "description": "Retrieve user data. Use `@me` or your user ID to get your own profile including upload count. Use another user ID to get public profile info.",
+        "description": "Retrieve user profile data. Includes badge flags and a `badges` object (ordered as `verified`, `staff`, `partner`, `bugHunterTier`, `translator`, `plus`). For non-self requests, public profile uploads are included by default as `publicUploads`.",
         "operationId": "getUser",
         "parameters": [
           {
@@ -28,6 +28,20 @@
             "required": true,
             "description": "User ID or `@me` for the authenticated user",
             "schema": { "type": "string" }
+          },
+          {
+            "name": "includePosts",
+            "in": "query",
+            "required": false,
+            "description": "Include `publicUploads` in the response. Defaults to `true` for non-self requests and `false` for `@me`.",
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "postsLimit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of `publicUploads` to return (1-50, default 50).",
+            "schema": { "type": "integer", "minimum": 1, "maximum": 50 }
           }
         ],
         "responses": {
@@ -36,11 +50,86 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "user": {
-                      "type": "object",
-                      "description": "User object. For @me: includes id, key, keyHasUploadsAccess, plus, enterprise, verified, suspended, created, uploads. For others: id, plus, verified, suspended, created."
+                  "$ref": "#/components/schemas/GetUserResponse"
+                },
+                "examples": {
+                  "selfProfile": {
+                    "summary": "@me response",
+                    "value": {
+                      "user": {
+                        "id": "123456789012345678",
+                        "username": "snipp",
+                        "avatar": "https://cdn.snipp.gg/avatar.png",
+                        "banner": null,
+                        "nickname": "Snipp",
+                        "bio": null,
+                        "socials": null,
+                        "key": "snp_xxx",
+                        "keyHasUploadsAccess": true,
+                        "plus": true,
+                        "enterprise": false,
+                        "verified": true,
+                        "staff": false,
+                        "partner": false,
+                        "translator": false,
+                        "bugHunterTier": 0,
+                        "suspended": false,
+                        "created": "2025-01-01T00:00:00.000Z",
+                        "embed_settings": null,
+                        "badges": {
+                          "verified": true,
+                          "staff": false,
+                          "partner": false,
+                          "bugHunterTier": 0,
+                          "translator": false,
+                          "plus": true
+                        },
+                        "uploads": 42
+                      }
+                    }
+                  },
+                  "publicProfile": {
+                    "summary": "Public profile response",
+                    "value": {
+                      "user": {
+                        "id": "987654321098765432",
+                        "username": "creator",
+                        "avatar": "https://cdn.snipp.gg/avatar.png",
+                        "banner": null,
+                        "nickname": "Creator",
+                        "bio": "Hello world",
+                        "socials": {
+                          "x": "snippgg"
+                        },
+                        "plus": true,
+                        "enterprise": false,
+                        "verified": true,
+                        "staff": false,
+                        "partner": false,
+                        "translator": false,
+                        "bugHunterTier": 1,
+                        "suspended": false,
+                        "created": "2025-01-01T00:00:00.000Z",
+                        "embed_settings": null,
+                        "badges": {
+                          "verified": true,
+                          "staff": false,
+                          "partner": false,
+                          "bugHunterTier": 1,
+                          "translator": false,
+                          "plus": true
+                        },
+                        "publicUploads": [
+                          {
+                            "url": "https://i.snipp.gg/987654321098765432/example",
+                            "code": "AbCd1234",
+                            "title": "Launch teaser",
+                            "description": "Public post",
+                            "created": "2025-01-02T00:00:00.000Z",
+                            "public": true
+                          }
+                        ]
+                      }
                     }
                   }
                 }
@@ -365,6 +454,118 @@
   },
   "components": {
     "schemas": {
+      "Badges": {
+        "type": "object",
+        "description": "Badge map used by profile surfaces. Order matches website profile rendering.",
+        "properties": {
+          "verified": { "type": "boolean" },
+          "staff": { "type": "boolean" },
+          "partner": { "type": "boolean" },
+          "bugHunterTier": { "type": "integer", "minimum": 0 },
+          "translator": { "type": "boolean" },
+          "plus": { "type": "boolean" }
+        },
+        "required": ["verified", "staff", "partner", "bugHunterTier", "translator", "plus"]
+      },
+      "PublicUpload": {
+        "type": "object",
+        "properties": {
+          "url": { "type": "string" },
+          "code": { "type": "string" },
+          "title": { "type": "string", "nullable": true },
+          "description": { "type": "string", "nullable": true },
+          "created": { "type": "string", "format": "date-time", "nullable": true },
+          "public": { "type": "boolean" }
+        },
+        "required": ["url", "code", "public"]
+      },
+      "UserProfileBase": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "username": { "type": "string", "nullable": true },
+          "avatar": { "type": "string", "nullable": true },
+          "banner": { "type": "string", "nullable": true },
+          "nickname": { "type": "string", "nullable": true },
+          "bio": { "type": "string", "nullable": true },
+          "socials": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": true
+          },
+          "plus": { "type": "boolean" },
+          "enterprise": { "type": "boolean" },
+          "verified": { "type": "boolean" },
+          "staff": { "type": "boolean" },
+          "partner": { "type": "boolean" },
+          "translator": { "type": "boolean" },
+          "bugHunterTier": { "type": "integer", "minimum": 0 },
+          "suspended": { "type": "boolean" },
+          "created": { "type": "string", "format": "date-time", "nullable": true },
+          "embed_settings": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": true
+          },
+          "badges": { "$ref": "#/components/schemas/Badges" }
+        },
+        "required": [
+          "id",
+          "plus",
+          "enterprise",
+          "verified",
+          "staff",
+          "partner",
+          "translator",
+          "bugHunterTier",
+          "suspended",
+          "badges"
+        ]
+      },
+      "UserProfileSelf": {
+        "allOf": [
+          { "$ref": "#/components/schemas/UserProfileBase" },
+          {
+            "type": "object",
+            "properties": {
+              "key": { "type": "string" },
+              "keyHasUploadsAccess": { "type": "boolean" },
+              "uploads": { "type": "integer", "minimum": 0 },
+              "publicUploads": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/PublicUpload" }
+              }
+            },
+            "required": ["key", "keyHasUploadsAccess", "uploads"]
+          }
+        ]
+      },
+      "UserProfilePublic": {
+        "allOf": [
+          { "$ref": "#/components/schemas/UserProfileBase" },
+          {
+            "type": "object",
+            "properties": {
+              "publicUploads": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/PublicUpload" }
+              }
+            }
+          }
+        ]
+      },
+      "GetUserResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/UserProfileSelf" },
+              { "$ref": "#/components/schemas/UserProfilePublic" }
+            ]
+          }
+        },
+        "required": ["user"]
+      },
       "Error": {
         "type": "object",
         "properties": {
