@@ -1,22 +1,24 @@
 ---
 title: "Rate limits"
-description: "Rate limits and throttling"
+description: "Understand API request limits and how to handle throttling"
 ---
 
-## General limits
+## Overview
 
-- **15 requests per minute** per user across most endpoints.
-- The rate limit window resets every minute.
+Rate limits protect the Snipp API from abuse and ensure consistent performance for all users. Limits apply per user based on your API key.
 
-## Upload limits
+## Limits
 
-- **8 uploads per second** per user.
-- Exceeding this limit may **ratelimit your account** temporarily.
-- Uploads and certain features are restricted while suspended.
+| Scope | Limit | Window |
+|-------|-------|--------|
+| General API requests | 15 requests | Per minute |
+| File uploads | 8 uploads | Per second |
 
-## Rate limit response
+These limits apply across all endpoints. Exceeding the upload limit may result in a temporary suspension of upload access for your account.
 
-When you exceed the limit, the API returns:
+## Rate limit responses
+
+When you exceed the limit, the API returns HTTP status `429`:
 
 ```json
 {
@@ -24,10 +26,23 @@ When you exceed the limit, the API returns:
 }
 ```
 
-HTTP status: **429**
+## Handling rate limits
+
+<Steps>
+  <Step title="Detect the 429 status">
+    Check for HTTP status `429` in your API responses.
+  </Step>
+  <Step title="Wait before retrying">
+    Pause for a short period before sending the next request. Start with 1–2 seconds.
+  </Step>
+  <Step title="Use exponential backoff">
+    If requests continue to fail, double the wait time with each retry (e.g. 1s, 2s, 4s, 8s).
+  </Step>
+</Steps>
 
 ## Best practices
 
-- **Space out uploads** when uploading multiple files.
-- **Cache user data** when possible instead of calling `/users/@me` repeatedly.
-- **Handle 429 responses** by retrying after a short delay with exponential backoff.
+- **Space out bulk uploads** — if you're uploading multiple files, add a short delay between each request rather than sending them all at once.
+- **Cache user data** — avoid calling `/users/@me` repeatedly. Fetch it once and reuse the result for the duration of your session.
+- **Batch where possible** — reduce the total number of API calls by combining logic on your end instead of making multiple requests for related data.
+- **Monitor your usage** — if you're consistently hitting rate limits, consider whether your integration can be optimized to make fewer requests.

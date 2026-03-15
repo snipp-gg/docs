@@ -1,6 +1,6 @@
 ---
 title: "Authentication"
-description: "Authenticate API requests with your API key"
+description: "Authenticate all API requests using your API key"
 ---
 
 ## API key authentication
@@ -11,30 +11,64 @@ All Snipp API endpoints require authentication. Include your API key in the `api
 api-key: YOUR_API_KEY
 ```
 
-### Example
-
-```bash
-curl -X GET "https://api.snipp.gg/users/@me" \
-  -H "api-key: your-api-key-here"
-```
-
 ### Where to find your API key
 
 1. Sign in at [snipp.gg](https://snipp.gg).
 2. Go to **Settings**.
-3. Copy your API key from the API section.
+3. Copy your API key from the **API** section.
+
+Your API key starts with `snp_` and is unique to your account.
+
+### Examples
+
+<CodeGroup>
+```bash cURL
+curl -X GET "https://api.snipp.gg/users/@me" \
+  -H "api-key: YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const res = await fetch("https://api.snipp.gg/users/@me", {
+  headers: { "api-key": "YOUR_API_KEY" },
+});
+const data = await res.json();
+```
+
+```python Python
+import requests
+
+res = requests.get(
+    "https://api.snipp.gg/users/@me",
+    headers={"api-key": "YOUR_API_KEY"},
+)
+data = res.json()
+```
+</CodeGroup>
+
+### API key permissions
+
+Not all API keys have the same permissions. When you view your key in settings, you'll see whether it has upload access enabled:
+
+| Permission | Description |
+|------------|-------------|
+| **Read** | Fetch your profile, list uploads, browse discover. Always enabled. |
+| **Upload** | Upload files and delete uploads. Can be toggled in settings. |
+
+You can check your key's permissions by calling `GET /users/@me` and looking at the `keyHasUploadsAccess` field.
 
 ### Security best practices
 
-- **Never expose your API key** in client-side code or public repositories.
-- **Use environment variables** in production: `process.env.SNIPP_API_KEY`.
-- **Rotate your key** if you suspect it has been compromised.
-- **Use keys with limited permissions** when available. Some keys have upload access; others do not.
+- **Never expose your API key** in client-side code, public repositories, or shared documents.
+- **Use environment variables** in production (e.g. `process.env.SNIPP_API_KEY`).
+- **Rotate your key** immediately if you suspect it has been compromised. You can regenerate it from your account settings.
+- **Limit upload access** if your integration only needs read access.
 
 ### Error responses
 
 | Status | Cause |
 |--------|-------|
-| 401 | Missing `api-key` header |
-| 401 | Invalid or expired API key |
-| 403 | Account suspended or insufficient permissions |
+| `401` | Missing `api-key` header |
+| `401` | Invalid or expired API key |
+| `403` | Account suspended or insufficient permissions |
+
+All errors return a JSON object with an `error` field describing the issue.

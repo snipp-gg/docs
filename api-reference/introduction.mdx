@@ -1,9 +1,11 @@
 ---
 title: "API overview"
-description: "Introduction to the Snipp API"
+description: "Base URL, authentication, endpoints, and error handling for the Snipp API"
 ---
 
 ## Base URL
+
+All API requests are made to:
 
 ```
 https://api.snipp.gg
@@ -11,27 +13,32 @@ https://api.snipp.gg
 
 ## Authentication
 
-Include your API key in the `api-key` header for every request. See [Authentication](/authentication) for details.
+Include your API key in the `api-key` header with every request. See [Authentication](/authentication) for details on finding your key and security best practices.
+
+```
+api-key: YOUR_API_KEY
+```
 
 ## Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/users/{id}` | Get profile data with badge fields and optional `publicUploads`. Use `@me` for your profile. |
-| POST | `/upload` | Upload an image or video. |
-| GET | `/uploads` | List your recent uploads. |
-| DELETE | `/deleteUpload` | Delete an upload by filename. |
-| GET | `/discover` | Get public uploads for the discover feed. |
+| `GET` | `/users/{id}` | Fetch a user profile. Use `@me` for your own account. |
+| `POST` | `/upload` | Upload an image or video file. |
+| `GET` | `/uploads` | List your 30 most recent uploads. |
+| `DELETE` | `/deleteUpload` | Delete an upload by filename. |
+| `GET` | `/discover` | Browse public uploads from the community. |
 
 ## Rate limits
 
-- **15 requests per minute** per user for most endpoints.
-- **8 uploads per second** before temporary suspension. Exceeding this may ratelimit your account.
-- See [Rate limits](/concepts/rate-limits) for details.
+- **15 requests per minute** per user across most endpoints.
+- **8 uploads per second** before temporary throttling.
+
+See [Rate limits](/concepts/rate-limits) for details on handling `429` responses.
 
 ## Error format
 
-Errors return JSON with an `error` field:
+All errors return a JSON object with an `error` field:
 
 ```json
 {
@@ -43,11 +50,11 @@ Errors return JSON with an `error` field:
 
 | Code | Meaning |
 |------|---------|
-| 200 | Success |
-| 400 | Bad request (invalid input, unsupported file type, file too large) |
-| 401 | Unauthorised (missing or invalid API key) |
-| 403 | Forbidden (suspended account or insufficient permissions) |
-| 404 | Not found |
-| 413 | Payload too large (file exceeds the 5GB hard limit) |
-| 429 | Rate limit exceeded |
-| 500 | Server error |
+| `200` | Success |
+| `400` | Bad request — invalid input, unsupported file type, or file too large |
+| `401` | Unauthorised — missing or invalid API key |
+| `403` | Forbidden — account suspended or insufficient permissions |
+| `404` | Not found |
+| `413` | Payload too large — file exceeds the 5 GB hard limit |
+| `429` | Rate limit exceeded |
+| `500` | Internal server error |

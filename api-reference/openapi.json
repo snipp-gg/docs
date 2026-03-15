@@ -173,7 +173,7 @@
             "name": "postprivacy",
             "in": "header",
             "required": false,
-            "description": "Privacy for share link: public, unlisted, or private (default)",
+            "description": "Privacy for the generated post: private (default, owner-only), unlisted, or public",
             "schema": { "type": "string", "enum": ["public", "unlisted", "private"] }
           }
         ],
@@ -206,11 +206,11 @@
                     "url": { "type": "string", "description": "Direct URL to the uploaded file" },
                     "post": {
                       "type": "object",
-                      "description": "Present when postprivacy is public or unlisted",
+                      "description": "Generated post metadata. Private posts are only viewable by the uploader.",
                       "properties": {
                         "code": { "type": "string" },
                         "url": { "type": "string", "description": "Share page URL" },
-                        "postPrivacy": { "type": "string", "enum": ["public", "unlisted"] }
+                        "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] }
                       }
                     }
                   }

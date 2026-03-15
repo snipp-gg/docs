@@ -1,28 +1,50 @@
 ---
 title: "Plans"
-description: "Free, Plus, and Enterprise plans"
+description: "Compare Free, Plus, and Enterprise plan features and limits"
 ---
 
 ## Plan tiers
 
-| Plan | Max file size | Upload limit |
-|------|---------------|--------------|
-| Free | 100 MB | 8 uploads/second |
-| Plus | 5 GB | 8 uploads/second |
-| Enterprise | 10 GB | 8 uploads/second |
+Snipp offers three tiers to suit different needs. All plans include full API access.
 
-## Plan features
+| | Free | Plus | Enterprise |
+|--|------|------|------------|
+| **Price** | Free | $4.99/mo | Contact us |
+| **Max file size** | 100 MB | 5 GB | 10 GB |
+| **Upload rate** | 8 uploads/sec | 8 uploads/sec | 8 uploads/sec |
+| **API access** | Yes | Yes | Yes |
+| **Discover feed ads** | Yes | No | No |
+| **Verified badge** | No | Yes | Yes |
+| **Priority support** | No | Yes | Yes |
 
-| Feature | Free | Plus | Enterprise |
-|---------|------|------|------------|
-| File size limit | 100 MB | 5 GB | 10 GB |
-| Discover feed ads | Yes | No | No |
-| API access | Yes | Yes | Yes |
+## Checking your plan via the API
 
-## Checking your plan
+Call `GET /users/@me` to see your current plan status. The response includes:
 
-Call `GET /users/@me` to see your plan status. The response includes:
+```json
+{
+  "user": {
+    "plus": true,
+    "enterprise": false,
+    "uploads": 42
+  }
+}
+```
 
-- `plus` — `true` if you have PLUS
-- `enterprise` — `true` if you have Enterprise
-- `uploads` — total number of uploads
+| Field | Description |
+|-------|-------------|
+| `plus` | `true` if you have an active Plus subscription |
+| `enterprise` | `true` if you have an Enterprise plan |
+| `uploads` | Total number of files you've uploaded |
+
+## Upgrading
+
+You can upgrade to Plus anytime from the [pricing page](https://snipp.gg/plus) or your account settings. Your new limits take effect immediately.
+
+For Enterprise plans, reach out to [enterprise@snipp.gg](mailto:enterprise@snipp.gg).
+
+## What happens when you downgrade
+
+- Your existing uploads remain accessible regardless of plan changes.
+- Files that exceed your new plan's size limit cannot be re-uploaded if deleted.
+- Plus features like the verified badge are removed at the end of your billing period.

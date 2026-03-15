@@ -1,58 +1,147 @@
 ---
 title: "Quickstart"
-description: "Get started with the Snipp API in three steps"
+description: "Get your API key and make your first upload in under five minutes"
 ---
 
 ## Get started in three steps
 
-Make your first API call and upload a file.
+Make your first API call and upload a file to Snipp.
 
 ### Step 1: Get your API key
 
 1. Sign in at [snipp.gg](https://snipp.gg).
-2. Open **Settings** and find your API key.
-3. Copy the key and keep it secure. You use it in the `api-key` header for every request.
+2. Open **Settings** and navigate to the API section.
+3. Copy your API key. You'll include it in the `api-key` header with every request.
 
 <Warning>
-Do not share your API key or commit it to version control. Use environment variables in production.
+  Never share your API key or commit it to version control. Store it in an environment variable in production.
 </Warning>
 
 ### Step 2: Verify your setup
 
-Test your API key by fetching your user data:
+Test your API key by fetching your own profile:
 
-```bash
+<CodeGroup>
+```bash cURL
 curl -X GET "https://api.snipp.gg/users/@me" \
   -H "api-key: YOUR_API_KEY"
 ```
 
-A successful response returns your user object with profile fields, badge flags, a `badges` object, and `uploads`.
+```javascript JavaScript
+const res = await fetch("https://api.snipp.gg/users/@me", {
+  headers: { "api-key": "YOUR_API_KEY" },
+});
+const data = await res.json();
+console.log(data.user.username);
+```
+
+```python Python
+import requests
+
+res = requests.get(
+    "https://api.snipp.gg/users/@me",
+    headers={"api-key": "YOUR_API_KEY"},
+)
+print(res.json()["user"]["username"])
+```
+</CodeGroup>
+
+A successful response returns your user object:
+
+```json
+{
+  "user": {
+    "id": "123456789012345678",
+    "username": "yourname",
+    "plus": false,
+    "verified": false,
+    "badges": { ... },
+    "uploads": 0
+  }
+}
+```
 
 ### Step 3: Upload a file
 
-Upload an image or video:
+Upload an image or video to your account:
 
-```bash
+<CodeGroup>
+```bash cURL
 curl -X POST "https://api.snipp.gg/upload" \
   -H "api-key: YOUR_API_KEY" \
-  -F "file=@/path/to/your/image.png"
+  -H "postprivacy: private" \
+  -F "file=@/path/to/image.png"
 ```
 
-The response includes a `url` field with the direct link to your uploaded file.
+```javascript JavaScript
+const formData = new FormData();
+formData.append("file", fileInput.files[0]);
+
+const res = await fetch("https://api.snipp.gg/upload", {
+  method: "POST",
+  headers: {
+    "api-key": "YOUR_API_KEY",
+    "postprivacy": "private",
+  },
+  body: formData,
+});
+const data = await res.json();
+console.log(data.url);
+```
+
+```python Python
+import requests
+
+with open("image.png", "rb") as f:
+    res = requests.post(
+        "https://api.snipp.gg/upload",
+        headers={
+            "api-key": "YOUR_API_KEY",
+            "postprivacy": "private",
+        },
+        files={"file": f},
+    )
+print(res.json()["url"])
+```
+</CodeGroup>
+
+The response includes a direct URL to your file and a post object with share metadata:
+
+```json
+{
+  "message": "Upload successful!",
+  "url": "https://i.snipp.gg/123456789012345678/abc123.png",
+  "post": {
+    "code": "AbCd1234",
+    "url": "https://snipp.gg/share/AbCd1234",
+    "postPrivacy": "private"
+  }
+}
+```
+
+### Privacy options
+
+Control who can see your uploads by setting the `postprivacy` header:
+
+| Value | Visibility |
+|-------|-----------|
+| `private` | Only you can view it (default) |
+| `unlisted` | Anyone with the share link can view it |
+| `public` | Visible to everyone and eligible for the Discover feed |
 
 ## Next steps
 
 <CardGroup cols={2}>
   <Card title="Authentication" icon="key" href="/authentication">
-    Learn how the api-key header works.
+    Learn how the API key header works and security best practices.
   </Card>
-  <Card title="API reference" icon="cloud-arrow-up" href="/api-reference/introduction">
-    Explore upload options like privacy settings.
+  <Card title="API reference" icon="code" href="/api-reference/introduction">
+    Explore all available endpoints and response schemas.
   </Card>
   <Card title="File types" icon="file" href="/concepts/file-types">
-    See supported formats and size limits.
+    See supported formats and size limits per plan.
   </Card>
   <Card title="Rate limits" icon="gauge" href="/concepts/rate-limits">
-    Understand request limits.
+    Understand request limits and how to handle throttling.
   </Card>
 </CardGroup>

@@ -1,43 +1,44 @@
 ---
 title: "Introduction"
-description: "Welcome to the Snipp API Documentation!"
+description: "Welcome to the Snipp API documentation. Learn how to upload, manage, and share files programmatically."
 ---
 
-<Warning>
-  This is the first version of the Snipp documentation. We're still working on it and it may include inaccuracies or gaps. Pull Requests on our [documentation repository](https://github.com/snipp-gg/docs) are welcome.
-</Warning>
+Snipp is a modern file-sharing platform with a developer-friendly API. Upload images, videos, and other media, manage your files, and integrate Snipp into your own apps and workflows.
 
 <Card icon="rocket" horizontal href="/quickstart" title="Quickstart">
   Get your API key and make your first upload in minutes.
 </Card>
 
-## API Features
+## What you can do
 
 <Columns cols={2}>
-  <Card icon="cloud-arrow-up" href="/api-reference/introduction" title="Upload media">
-    Upload images and videos via `POST /upload`. Up to 100 MB free, 5 GB with Plus.
+  <Card icon="cloud-arrow-up" href="/api-reference/endpoint/upload" title="Upload files">
+    Upload images and videos via `POST /upload`. Supports privacy controls and automatic post creation.
   </Card>
-  <Card icon="list" href="/api-reference/introduction" title="Manage uploads">
-    List and delete your uploads programmatically with `GET /uploads` and `DELETE /deleteUpload`.
+  <Card icon="list" href="/api-reference/endpoint/uploads" title="Manage uploads">
+    List your recent uploads with `GET /uploads` and remove files with `DELETE /deleteUpload`.
   </Card>
-  <Card icon="user" href="/api-reference/introduction" title="User data">
-    Fetch profile fields, badge metadata, and optional public profile uploads with `GET /users/{id}`.
+  <Card icon="user" href="/api-reference/endpoint/users" title="User profiles">
+    Fetch profile data, badges, and public uploads for any user with `GET /users/{id}`.
   </Card>
-  <Card icon="compass" href="/api-reference/introduction" title="Discover feed">
-    Access public uploads for the discover feed with `GET /discover`.
+  <Card icon="compass" href="/api-reference/endpoint/discover" title="Discover feed">
+    Access the public discover feed with `GET /discover` to browse community uploads.
   </Card>
 </Columns>
 
 ## Next steps
 
-<div className="card-group-section">
-  <CardGroup cols={2}>
-    <Card title="Authentication" icon="key" href="/authentication">
-      Learn how to authenticate with your API key.
-    </Card>
-
-    <Card title="Visit Snipp" icon="arrow-right" href="https://snipp.gg">
-      Sign up for free and start sharing.
-    </Card>
-  </CardGroup>
-</div>
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Learn how to authenticate requests with your API key.
+  </Card>
+  <Card title="File types" icon="file" href="/concepts/file-types">
+    See which formats are supported and their size limits.
+  </Card>
+  <Card title="Rate limits" icon="gauge" href="/concepts/rate-limits">
+    Understand request limits and best practices.
+  </Card>
+  <Card title="Plans" icon="gem" href="/concepts/plans">
+    Compare Free, Plus, and Enterprise tiers.
+  </Card>
+</CardGroup>

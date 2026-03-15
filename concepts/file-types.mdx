@@ -1,19 +1,32 @@
 ---
 title: "File types"
-description: "Supported image and video formats"
+description: "Supported file formats and size limits"
 ---
 
 ## Supported formats
 
-| Type | Formats | MIME types |
-|------|---------|------------|
-| Images | PNG, JPG, WebP | `image/png`, `image/jpeg`, `image/webp` |
-| Animated | GIF | `image/gif` |
-| Video | MP4, MOV, MKV | `video/mp4`, `video/quicktime`, `video/x-matroska` |
+Snipp supports a range of image and video formats for uploading and sharing.
+
+### Images
+
+| Format | Extension | MIME type |
+|--------|-----------|-----------|
+| PNG | `.png` | `image/png` |
+| JPEG | `.jpg`, `.jpeg` | `image/jpeg` |
+| WebP | `.webp` | `image/webp` |
+| GIF | `.gif` | `image/gif` |
+
+### Video
+
+| Format | Extension | MIME type |
+|--------|-----------|-----------|
+| MP4 | `.mp4` | `video/mp4` |
+| MOV | `.mov` | `video/quicktime` |
+| MKV | `.mkv` | `video/x-matroska` |
 
 ## File size limits
 
-Limits depend on your plan:
+Maximum file size depends on your plan:
 
 | Plan | Max file size |
 |------|---------------|
@@ -21,11 +34,15 @@ Limits depend on your plan:
 | Plus | 5 GB |
 | Enterprise | 10 GB |
 
-The upload hard limit is 5 GB per request. Files larger than 5 GB return a 413 error.
+The absolute upload limit is **5 GB per request**. Files larger than 5 GB return a `413` error. Enterprise users uploading files between 5–10 GB use chunked uploads.
+
+<Info>
+  Upgrading to [Plus](https://snipp.gg/plus) increases your limit to 5 GB per file.
+</Info>
 
 ## Unsupported files
 
-Files that do not match the allowed types return a 400 error:
+If you upload a file with an unsupported format, the API returns a `400` error:
 
 ```json
 {
@@ -35,4 +52,4 @@ Files that do not match the allowed types return a 400 error:
 
 ## Reserved marker
 
-Files that start with the internal encryption marker cannot be uploaded. If you receive an error about a reserved marker, try a different file.
+Files that begin with an internal encryption marker are rejected by the upload endpoint. If you encounter this error, the file may be corrupted or use a reserved byte sequence. Try re-exporting the file from its original source.
