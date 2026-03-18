@@ -47,6 +47,11 @@ footer span:has(a[href*="mintlify"]) {
   color: #ffffff !important;
 }
 
+#content-area a code,
+.link > code {
+  z-index: 0 !important;
+}
+
 :not(pre) > code {
   background-color: rgba(127, 127, 127, 0.15) !important;
   padding: 0.15em 0.4em !important;
