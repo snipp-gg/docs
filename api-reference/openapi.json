@@ -414,6 +414,7 @@
                           "author": { "type": "string" },
                           "authorUsername": { "type": "string" },
                           "authorAvatar": { "type": "string" },
+                          "authorPlus": { "type": "boolean" },
                           "isVerified": { "type": "boolean" },
                           "isAd": { "type": "boolean" }
                         }
