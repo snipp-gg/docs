@@ -58,6 +58,15 @@ let opts = GetUserOptions {
 let user = client.get_user("@me", Some(opts)).await?;
 ```
 
+### `get_post(code)`
+
+Fetch a post by its share code.
+
+```rust
+let post = client.get_post("AbCd1234").await?;
+println!("{:?}", post.post.url);
+```
+
 ### `upload(path, privacy)`
 
 Upload a file from disk.
@@ -75,6 +84,21 @@ List the authenticated user's recent uploads.
 
 ```rust
 let uploads = client.list_uploads().await?;
+```
+
+### `edit_upload(code, options)`
+
+Edit an existing upload's title, description, or privacy.
+
+```rust
+use snipp_rust::{EditUploadOptions, Privacy};
+
+let opts = EditUploadOptions {
+    title: Some("New title".into()),
+    privacy: Some(Privacy::Public),
+    ..Default::default()
+};
+client.edit_upload("AbCd1234", opts).await?;
 ```
 
 ### `delete_upload(filename)`

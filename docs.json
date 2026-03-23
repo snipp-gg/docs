@@ -87,6 +87,7 @@
             "openapi": "api-reference/openapi.json",
             "pages": [
               "api-reference/endpoint/users",
+              "api-reference/endpoint/post",
               "api-reference/endpoint/upload",
               "api-reference/endpoint/uploads",
               "api-reference/endpoint/edit",

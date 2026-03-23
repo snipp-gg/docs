@@ -163,6 +163,86 @@
         }
       }
     },
+    "/posts/{code}": {
+      "get": {
+        "summary": "Get post",
+        "description": "Fetch a post by its share code. Returns the post's metadata including its direct file URL, title, description, privacy level, and creation date. Private posts are only visible to the owner.",
+        "operationId": "getPost",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "The share code of the post",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "post": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "string" },
+                        "url": { "type": "string", "nullable": true, "description": "Direct URL to the file" },
+                        "title": { "type": "string", "nullable": true },
+                        "description": { "type": "string", "nullable": true },
+                        "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] },
+                        "created": { "type": "string", "format": "date-time", "nullable": true }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "post": {
+                    "summary": "Post response",
+                    "value": {
+                      "post": {
+                        "code": "AbCd1234",
+                        "url": "https://i.snipp.gg/123456789012345678/example.png",
+                        "title": "My screenshot",
+                        "description": "A cool screenshot",
+                        "postPrivacy": "public",
+                        "created": "2025-01-02T00:00:00.000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/upload": {
       "post": {
         "summary": "Upload file",

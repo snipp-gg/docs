@@ -44,6 +44,15 @@ Fetch a user by ID. Pass `"@me"` for the authenticated user.
 const user = await client.getUser("@me", { includePosts: true, postsLimit: 10 });
 ```
 
+### `getPost(code)`
+
+Fetch a post by its share code.
+
+```javascript
+const post = await client.getPost("AbCd1234");
+console.log(post.post.url);
+```
+
 ### `upload(file, options?)`
 
 Upload a file. Accepts a `File`, `Blob`, `Buffer`, or `Uint8Array`.
@@ -67,6 +76,20 @@ List the authenticated user's recent uploads.
 
 ```javascript
 const uploads = await client.listUploads();
+```
+
+### `editUpload(code, options)`
+
+Edit an existing upload's title, description, or privacy.
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `title` | `string` | New title (max 30 chars). Empty string to clear. |
+| `description` | `string` | New description (max 200 chars). Empty string to clear. |
+| `privacy` | `"public" \| "unlisted" \| "private"` | New visibility setting. |
+
+```javascript
+await client.editUpload("AbCd1234", { title: "New title", privacy: "public" });
 ```
 
 ### `deleteUpload(filename)`

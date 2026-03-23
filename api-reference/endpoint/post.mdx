@@ -1,0 +1,21 @@
+---
+title: "Get post"
+openapi: "GET /posts/{code}"
+---
+
+Use this endpoint to fetch a post by its share code.
+
+## Behavior
+
+- Returns the post's metadata including its direct file URL, title, description, privacy, and creation date.
+- Private posts are only visible to the owner. Requests for another user's private post return `404`.
+- Moderated posts may still be returned but their file URL may be unavailable.
+
+## Examples
+
+Fetch a post by code:
+
+```bash
+curl -X GET "https://api.snipp.gg/posts/AbCd1234" \
+  -H "api-key: YOUR_API_KEY"
+```

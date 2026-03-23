@@ -45,6 +45,19 @@ Fetch a user by ID. Pass `"@me"` for the authenticated user.
 user = client.get_user("@me", include_posts=True, posts_limit=10)
 ```
 
+### `get_post(code)`
+
+Fetch a post by its share code.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `code` | `str` | The share code of the post. |
+
+```python
+post = client.get_post("AbCd1234")
+print(post["post"]["url"])
+```
+
 ### `upload(file, privacy="unlisted")`
 
 Upload a file. Accepts a file path string, bytes, or a file-like object.
@@ -65,6 +78,21 @@ List the authenticated user's recent uploads.
 
 ```python
 uploads = client.list_uploads()
+```
+
+### `edit_upload(code, title=None, description=None, privacy=None)`
+
+Edit an existing upload's title, description, or privacy.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `code` | `str` | The share code of the upload. |
+| `title` | `str \| None` | New title (max 30 chars). Empty string to clear. |
+| `description` | `str \| None` | New description (max 200 chars). Empty string to clear. |
+| `privacy` | `str \| None` | `"public"`, `"unlisted"`, or `"private"`. |
+
+```python
+client.edit_upload("AbCd1234", title="New title", privacy="public")
 ```
 
 ### `delete_upload(filename)`
