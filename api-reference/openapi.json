@@ -569,6 +569,160 @@
         }
       }
     },
+    "/blocks": {
+      "get": {
+        "summary": "List blocked users",
+        "description": "Returns the list of users you have blocked.",
+        "operationId": "listBlocks",
+        "responses": {
+          "200": {
+            "description": "List of blocked users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blocks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "userId": { "type": "string" },
+                          "created": { "type": "string", "format": "date-time" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      },
+      "post": {
+        "summary": "Block user",
+        "description": "Block a user by their ID. Blocked users cannot view your profile, posts, or interact with your content. You also cannot view theirs. Idempotent — blocking an already-blocked user succeeds.",
+        "operationId": "blockUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "targetId": { "type": "string", "description": "The user ID to block" }
+                },
+                "required": ["targetId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Block status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blocked": { "type": "boolean" },
+                    "message": { "type": "string", "nullable": true }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid target or cannot block yourself", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "403": { "description": "Account suspended", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "User not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      },
+      "delete": {
+        "summary": "Unblock user",
+        "description": "Unblock a user by their ID. Idempotent — unblocking a non-blocked user succeeds.",
+        "operationId": "unblockUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "targetId": { "type": "string", "description": "The user ID to unblock" }
+                },
+                "required": ["targetId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Block status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blocked": { "type": "boolean" },
+                    "message": { "type": "string", "nullable": true }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid target", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "User not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/reports": {
+      "post": {
+        "summary": "Report post",
+        "description": "Report a post for violating community guidelines. The post must be public and not your own. Reports are reviewed by the moderation team.",
+        "operationId": "reportPost",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": { "type": "string", "description": "The share code of the post to report" },
+                  "reason": { "type": "string", "description": "Optional reason for the report", "maxLength": 500 }
+                },
+                "required": ["code"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Report submitted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Missing or invalid code, or reason too long", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "403": { "description": "Post already moderated, reporting own post, or author has blocked you", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "Post not found or private", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
     "/discover": {
       "get": {
         "summary": "Discover feed",
@@ -731,6 +885,10 @@
               "publicUploads": {
                 "type": "array",
                 "items": { "$ref": "#/components/schemas/PublicUpload" }
+              },
+              "blockedByYou": {
+                "type": "boolean",
+                "description": "Whether you have blocked this user. Only present on non-self profiles."
               }
             }
           }

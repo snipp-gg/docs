@@ -1,0 +1,70 @@
+---
+title: "Reports"
+openapi: "POST /reports"
+---
+
+Report a post for violating community guidelines. Reports are reviewed by the moderation team.
+
+## Endpoint
+
+### Report a post
+
+```
+POST /reports
+```
+
+Submit a report for a post using its share code. An optional reason can be provided to help moderators review the report.
+
+**Request body:**
+
+```json
+{
+  "code": "AbCd1234",
+  "reason": "This post contains inappropriate content"
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `code` | string | Yes | The share code of the post to report |
+| `reason` | string | No | Reason for the report (max 500 characters) |
+
+**Response:**
+
+```json
+{
+  "success": true
+}
+```
+
+## Errors
+
+| Code | Error | When |
+|------|-------|------|
+| `400` | Missing or invalid code | `code` is empty or missing |
+| `400` | Reason too long | `reason` exceeds 500 characters |
+| `403` | Post is already moderated | The post has already been actioned by moderators |
+| `403` | You cannot report your own post | `code` belongs to a post you own |
+| `403` | Author has blocked you | The post author has blocked you |
+| `404` | Post not found | Post does not exist or is private |
+| `429` | Rate limit exceeded | Too many requests |
+
+## Examples
+
+Report a post:
+
+```bash
+curl -X POST "https://api.snipp.gg/reports" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"code": "AbCd1234", "reason": "Inappropriate content"}'
+```
+
+Report a post without a reason:
+
+```bash
+curl -X POST "https://api.snipp.gg/reports" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"code": "AbCd1234"}'
+```

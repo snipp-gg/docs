@@ -13,6 +13,8 @@ Use this endpoint to fetch either your own profile (`@me`) or another user's pub
 - `includePosts` controls `publicUploads`.
 - `includePosts` defaults to `false` for `@me` and `true` for non-self requests.
 - `postsLimit` limits `publicUploads` to `1-50` (default `50`).
+- Non-self profiles include a `blockedByYou` boolean indicating whether you have blocked that user.
+- If the target user has blocked **you**, the endpoint returns `403` with `"You have been blocked by this user."`. Staff accounts are exempt.
 
 ## Examples
 

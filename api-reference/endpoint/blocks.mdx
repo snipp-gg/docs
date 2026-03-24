@@ -1,0 +1,119 @@
+---
+title: "Blocks"
+openapi: "GET /blocks"
+---
+
+Manage your blocked users list. Blocked users cannot view your profile, posts, or interact with your content. You also cannot view theirs.
+
+## Endpoints
+
+### List blocked users
+
+```
+GET /blocks
+```
+
+Returns the list of user IDs you have blocked.
+
+**Response:**
+
+```json
+{
+  "blocks": [
+    { "userId": "123456789012345678", "created": "2025-06-01T12:00:00.000Z" }
+  ]
+}
+```
+
+### Block a user
+
+```
+POST /blocks
+```
+
+Block a user by their ID. If the user is already blocked, the request succeeds with `blocked: true`.
+
+**Request body:**
+
+```json
+{
+  "targetId": "123456789012345678"
+}
+```
+
+**Response:**
+
+```json
+{
+  "blocked": true
+}
+```
+
+### Unblock a user
+
+```
+DELETE /blocks
+```
+
+Unblock a user by their ID. If the user is not blocked, the request succeeds with `blocked: false`.
+
+**Request body:**
+
+```json
+{
+  "targetId": "123456789012345678"
+}
+```
+
+**Response:**
+
+```json
+{
+  "blocked": false
+}
+```
+
+## Behavior
+
+- You cannot block yourself.
+- Blocking is bidirectional in effect: blocked users cannot see your posts, profile, or interact with your content (comment, like, report). You also cannot see theirs.
+- Blocked users' posts are filtered from `/discover` results.
+- When fetching a user profile via `GET /users/{id}`, a `blockedByYou` field indicates whether you have blocked that user. If the target user has blocked **you**, a `403` error is returned.
+- Staff accounts are exempt from block restrictions.
+
+## Errors
+
+| Code | Error | When |
+|------|-------|------|
+| `400` | Missing or invalid targetId | `targetId` is empty or missing |
+| `400` | You cannot block yourself | `targetId` matches your own ID |
+| `403` | Your account has been suspended | Account is suspended |
+| `404` | User not found | Target user does not exist |
+| `429` | Rate limit exceeded | Too many requests |
+
+## Examples
+
+Block a user:
+
+```bash
+curl -X POST "https://api.snipp.gg/blocks" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"targetId": "123456789012345678"}'
+```
+
+List your blocks:
+
+```bash
+curl -X GET "https://api.snipp.gg/blocks" \
+  -H "api-key: YOUR_API_KEY"
+```
+
+Unblock a user:
+
+```bash
+curl -X DELETE "https://api.snipp.gg/blocks" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"targetId": "123456789012345678"}'
+```
