@@ -600,7 +600,9 @@
           "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
-      },
+      }
+    },
+    "/block": {
       "post": {
         "summary": "Block user",
         "description": "Block a user by their ID. Blocked users cannot view your profile, posts, or interact with your content. You also cannot view theirs. Idempotent — blocking an already-blocked user succeeds.",
@@ -640,8 +642,10 @@
           "404": { "description": "User not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
-      },
-      "delete": {
+      }
+    },
+    "/unblock": {
+      "post": {
         "summary": "Unblock user",
         "description": "Unblock a user by their ID. Idempotent — unblocking a non-blocked user succeeds.",
         "operationId": "unblockUser",
@@ -676,6 +680,7 @@
           },
           "400": { "description": "Invalid target", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "403": { "description": "Account suspended", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "404": { "description": "User not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }

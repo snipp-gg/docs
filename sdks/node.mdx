@@ -108,6 +108,30 @@ Browse public uploads from the community.
 const feed = await client.discover();
 ```
 
+### `listBlocks()`
+
+List the users you have blocked.
+
+```javascript
+const { blocks } = await client.listBlocks();
+```
+
+### `blockUser(targetId)`
+
+Block a user by their ID.
+
+```javascript
+await client.blockUser("123456789012345678");
+```
+
+### `unblockUser(targetId)`
+
+Unblock a user by their ID.
+
+```javascript
+await client.unblockUser("123456789012345678");
+```
+
 ## Error handling
 
 All API errors throw a `SnippError` with `status` and `message` properties.

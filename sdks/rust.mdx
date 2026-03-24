@@ -117,6 +117,30 @@ Browse public uploads from the community.
 let feed = client.discover().await?;
 ```
 
+### `list_blocks()`
+
+List the users you have blocked.
+
+```rust
+let blocks = client.list_blocks().await?;
+```
+
+### `block_user(target_id)`
+
+Block a user by their ID.
+
+```rust
+client.block_user("123456789012345678").await?;
+```
+
+### `unblock_user(target_id)`
+
+Unblock a user by their ID.
+
+```rust
+client.unblock_user("123456789012345678").await?;
+```
+
 ## Error handling
 
 All errors are returned as `SnippError`, which covers API errors, HTTP errors, deserialization failures, and IO errors.

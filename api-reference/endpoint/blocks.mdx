@@ -28,7 +28,7 @@ Returns the list of user IDs you have blocked.
 ### Block a user
 
 ```
-POST /blocks
+POST /block
 ```
 
 Block a user by their ID. If the user is already blocked, the request succeeds with `blocked: true`.
@@ -52,7 +52,7 @@ Block a user by their ID. If the user is already blocked, the request succeeds w
 ### Unblock a user
 
 ```
-DELETE /blocks
+POST /unblock
 ```
 
 Unblock a user by their ID. If the user is not blocked, the request succeeds with `blocked: false`.
@@ -96,7 +96,7 @@ Unblock a user by their ID. If the user is not blocked, the request succeeds wit
 Block a user:
 
 ```bash
-curl -X POST "https://api.snipp.gg/blocks" \
+curl -X POST "https://api.snipp.gg/block" \
   -H "api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"targetId": "123456789012345678"}'
@@ -112,7 +112,7 @@ curl -X GET "https://api.snipp.gg/blocks" \
 Unblock a user:
 
 ```bash
-curl -X DELETE "https://api.snipp.gg/blocks" \
+curl -X POST "https://api.snipp.gg/unblock" \
   -H "api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"targetId": "123456789012345678"}'
