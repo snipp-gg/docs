@@ -16,6 +16,16 @@ Rate limits protect the Snipp API from abuse and ensure consistent performance f
 
 These limits apply across all endpoints. Exceeding the upload limit may result in a temporary suspension of upload access for your account.
 
+## Rate limit headers
+
+Every authenticated response includes headers to help you track your usage:
+
+| Header | Description |
+|--------|-------------|
+| `X-RateLimit-Limit` | Maximum requests allowed per window |
+| `X-RateLimit-Remaining` | Requests remaining in the current window |
+| `X-RateLimit-Reset` | Unix timestamp (seconds) when the window resets |
+
 ## Rate limit responses
 
 When you exceed the limit, the API returns HTTP status `429`:
@@ -26,14 +36,19 @@ When you exceed the limit, the API returns HTTP status `429`:
 }
 ```
 
+The rate limit headers are still included on `429` responses so you know when to retry.
+
 ## Handling rate limits
 
 <Steps>
+  <Step title="Check the headers">
+    Read `X-RateLimit-Remaining` from each response. When it approaches `0`, slow down.
+  </Step>
   <Step title="Detect the 429 status">
     Check for HTTP status `429` in your API responses.
   </Step>
-  <Step title="Wait before retrying">
-    Pause for a short period before sending the next request. Start with 1–2 seconds.
+  <Step title="Wait until reset">
+    Use the `X-RateLimit-Reset` header to calculate how long to wait before retrying.
   </Step>
   <Step title="Use exponential backoff">
     If requests continue to fail, double the wait time with each retry (e.g. 1s, 2s, 4s, 8s).

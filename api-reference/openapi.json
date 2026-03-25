@@ -193,7 +193,24 @@
                         "title": { "type": "string", "nullable": true },
                         "description": { "type": "string", "nullable": true },
                         "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] },
-                        "created": { "type": "string", "format": "date-time", "nullable": true }
+                        "created": { "type": "string", "format": "date-time", "nullable": true },
+                        "file": {
+                          "type": "object",
+                          "description": "File metadata. May be absent for older uploads.",
+                          "properties": {
+                            "size": { "type": "integer", "description": "File size in bytes" },
+                            "size_formatted": { "type": "string", "description": "Human-readable file size" },
+                            "mime_type": { "type": "string", "description": "MIME type" },
+                            "dimensions": {
+                              "type": "object",
+                              "description": "Image dimensions. Only present for images and GIFs.",
+                              "properties": {
+                                "width": { "type": "integer" },
+                                "height": { "type": "integer" }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -208,7 +225,16 @@
                         "title": "My screenshot",
                         "description": "A cool screenshot",
                         "postPrivacy": "public",
-                        "created": "2025-01-02T00:00:00.000Z"
+                        "created": "2025-01-02T00:00:00.000Z",
+                        "file": {
+                          "size": 2621440,
+                          "size_formatted": "2.50 MB",
+                          "mime_type": "image/png",
+                          "dimensions": {
+                            "width": 1920,
+                            "height": 1080
+                          }
+                        }
                       }
                     }
                   }
@@ -284,6 +310,24 @@
                   "properties": {
                     "message": { "type": "string", "example": "Upload successful!" },
                     "url": { "type": "string", "description": "Direct URL to the uploaded file" },
+                    "file": {
+                      "type": "object",
+                      "description": "File metadata.",
+                      "properties": {
+                        "size": { "type": "integer", "description": "File size in bytes" },
+                        "size_formatted": { "type": "string", "description": "Human-readable file size (e.g. \"2.50 MB\")" },
+                        "mime_type": { "type": "string", "description": "MIME type (e.g. \"image/png\")" },
+                        "dimensions": {
+                          "type": "object",
+                          "description": "Image dimensions. Only present for images and GIFs.",
+                          "properties": {
+                            "width": { "type": "integer" },
+                            "height": { "type": "integer" }
+                          }
+                        }
+                      }
+                    },
+                    "processing_time": { "type": "integer", "description": "Server-side processing time in milliseconds" },
                     "post": {
                       "type": "object",
                       "description": "Generated post metadata. Private posts are only viewable by the uploader.",
@@ -360,8 +404,9 @@
                         "type": "object",
                         "properties": {
                           "url": { "type": "string" },
-                          "size": { "type": "string" },
-                          "uploaded": { "type": "string" }
+                          "size": { "type": "integer", "description": "File size in bytes" },
+                          "size_formatted": { "type": "string", "description": "Human-readable file size (e.g. \"2.50 MB\")" },
+                          "uploaded": { "type": "string", "format": "date-time", "description": "ISO 8601 timestamp" }
                         }
                       }
                     }
