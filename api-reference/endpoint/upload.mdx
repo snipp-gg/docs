@@ -1,4 +1,56 @@
 ---
-title: "Upload file"
+title: "Upload file(s)"
 openapi: "POST /upload"
 ---
+
+Upload 1-9 files in a single request. Every upload automatically creates a post. When sending multiple files, they are grouped into an album by default.
+
+## Headers
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `api-key` | Yes | Your API key |
+| `postprivacy` | No | `public`, `unlisted`, or `private` (default) |
+| `posttitle` | No | Post title, max 30 characters |
+| `postdescription` | No | Post description, max 200 characters |
+| `x-upload-mode` | No | `album` (default) or `individual` — only applies to 2+ files |
+
+## Behavior
+
+- **1 file** → creates a single post, `x-upload-mode` is ignored
+- **2+ files, no header or `album`** → creates one album post containing all files
+- **2+ files, `individual`** → creates a separate post for each file
+
+## Examples
+
+Upload a single file:
+
+```bash
+curl -X POST "https://api.snipp.gg/upload" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "postprivacy: unlisted" \
+  -H "posttitle: My screenshot" \
+  -F "file=@screenshot.png"
+```
+
+Upload an album (2+ files default to album):
+
+```bash
+curl -X POST "https://api.snipp.gg/upload" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "postprivacy: public" \
+  -H "posttitle: Vacation photos" \
+  -F "file=@photo1.png" \
+  -F "file=@photo2.png" \
+  -F "file=@photo3.png"
+```
+
+Upload multiple files as individual posts:
+
+```bash
+curl -X POST "https://api.snipp.gg/upload" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "x-upload-mode: individual" \
+  -F "file=@image1.png" \
+  -F "file=@image2.png"
+```

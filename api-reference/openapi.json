@@ -271,16 +271,37 @@
     },
     "/upload": {
       "post": {
-        "summary": "Upload file",
-        "description": "Upload an image or video file. Supports PNG, JPG, WebP, GIF, MP4, MOV, and MKV. File size limits depend on your plan: Free (100 MB), Plus (5 GB), Enterprise (10 GB).",
+        "summary": "Upload file(s)",
+        "description": "Upload 1-9 image or video files. Supports PNG, JPG, WebP, GIF, MP4, MOV, and MKV. Every upload automatically creates a post. When sending multiple files, they are grouped into an album by default. File size limits depend on your plan: Free (100 MB per file), Plus (5 GB per file), Enterprise (10 GB per file).",
         "operationId": "upload",
         "parameters": [
           {
             "name": "postprivacy",
             "in": "header",
             "required": false,
-            "description": "Privacy for the generated post: unlisted (default, accessible via link), private (owner-only), or public (visible on Discover)",
-            "schema": { "type": "string", "enum": ["public", "unlisted", "private"], "default": "unlisted" }
+            "description": "Privacy for the generated post: private (default), unlisted (accessible via link), or public (visible on Discover)",
+            "schema": { "type": "string", "enum": ["public", "unlisted", "private"], "default": "private" }
+          },
+          {
+            "name": "posttitle",
+            "in": "header",
+            "required": false,
+            "description": "Post title (max 30 characters)",
+            "schema": { "type": "string", "maxLength": 30 }
+          },
+          {
+            "name": "postdescription",
+            "in": "header",
+            "required": false,
+            "description": "Post description (max 200 characters)",
+            "schema": { "type": "string", "maxLength": 200 }
+          },
+          {
+            "name": "x-upload-mode",
+            "in": "header",
+            "required": false,
+            "description": "Only relevant when uploading 2+ files. `album` (default) groups all files into a single album post. `individual` creates a separate post per file.",
+            "schema": { "type": "string", "enum": ["album", "individual"], "default": "album" }
           }
         ],
         "requestBody": {
@@ -293,7 +314,7 @@
                   "file": {
                     "type": "string",
                     "format": "binary",
-                    "description": "Image or video file"
+                    "description": "1-9 image or video files. Use multiple `file` fields for multi-file uploads."
                   }
                 }
               }
@@ -302,248 +323,125 @@
         },
         "responses": {
           "200": {
-            "description": "Upload successful",
+            "description": "Upload successful. Response shape depends on whether 1 or multiple files were uploaded.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": { "type": "string", "example": "Upload successful!" },
-                    "url": { "type": "string", "description": "Direct URL to the uploaded file" },
-                    "file": {
+                  "oneOf": [
+                    {
                       "type": "object",
-                      "description": "File metadata.",
+                      "description": "Single file response",
                       "properties": {
-                        "size": { "type": "integer", "description": "File size in bytes" },
-                        "size_formatted": { "type": "string", "description": "Human-readable file size (e.g. \"2.50 MB\")" },
-                        "mime_type": { "type": "string", "description": "MIME type (e.g. \"image/png\")" },
-                        "dimensions": {
+                        "message": { "type": "string", "example": "Upload successful!" },
+                        "url": { "type": "string", "description": "Direct URL to the uploaded file" },
+                        "file": {
                           "type": "object",
-                          "description": "Image dimensions. Only present for images and GIFs.",
                           "properties": {
-                            "width": { "type": "integer" },
-                            "height": { "type": "integer" }
-                          }
-                        }
-                      }
-                    },
-                    "processing_time": { "type": "integer", "description": "Server-side processing time in milliseconds" },
-                    "post": {
-                      "type": "object",
-                      "description": "Generated post metadata. Private posts are only viewable by the uploader.",
-                      "properties": {
-                        "code": { "type": "string" },
-                        "url": { "type": "string", "description": "Share page URL" },
-                        "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "No file, unsupported type, or file too large",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorised",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
-              }
-            }
-          },
-          "403": {
-            "description": "Account suspended",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
-              }
-            }
-          },
-          "413": {
-            "description": "File exceeds your plan's size limit",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
-              }
-            }
-          },
-          "429": {
-            "description": "Rate limit exceeded",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/upload/multi": {
-      "post": {
-        "summary": "Upload multiple files",
-        "description": "Upload up to 9 image or video files in a single request. Supports PNG, JPG, WebP, GIF, MP4, MOV, and MKV. Individual files that fail validation (wrong type, too large, etc.) are skipped — the remaining files are still uploaded. If all files fail, returns 400. File size limits depend on your plan: Free (100 MB per file), Plus (5 GB per file), Enterprise (10 GB per file).",
-        "operationId": "uploadMulti",
-        "parameters": [
-          {
-            "name": "postprivacy",
-            "in": "header",
-            "required": false,
-            "description": "Privacy for the generated post(s): unlisted (default), private, or public",
-            "schema": { "type": "string", "enum": ["public", "unlisted", "private"], "default": "unlisted" }
-          },
-          {
-            "name": "x-upload-mode",
-            "in": "header",
-            "required": false,
-            "description": "Set to `album` to group all files into a single album post, or `individual` (default) to create separate posts per file",
-            "schema": { "type": "string", "enum": ["album", "individual"], "default": "individual" }
-          },
-          {
-            "name": "x-post-title",
-            "in": "header",
-            "required": false,
-            "description": "Post title (max 30 characters)",
-            "schema": { "type": "string", "maxLength": 30 }
-          },
-          {
-            "name": "x-post-description",
-            "in": "header",
-            "required": false,
-            "description": "Post description (max 200 characters)",
-            "schema": { "type": "string", "maxLength": 200 }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "array",
-                    "items": { "type": "string", "format": "binary" },
-                    "minItems": 2,
-                    "maxItems": 9,
-                    "description": "2-9 image or video files"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Upload completed. Partial success is possible — check `failed` array.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": { "type": "string", "example": "Upload successful!" },
-                    "files": {
-                      "type": "array",
-                      "description": "Successfully uploaded files",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "index": { "type": "integer", "description": "Original position in the request (0-based)" },
-                          "url": { "type": "string" },
-                          "size": { "type": "integer" },
-                          "size_formatted": { "type": "string" },
-                          "mime_type": { "type": "string" },
-                          "status": { "type": "string", "enum": ["success"] },
-                          "dimensions": {
-                            "type": "object",
-                            "nullable": true,
-                            "properties": {
-                              "width": { "type": "integer" },
-                              "height": { "type": "integer" }
+                            "size": { "type": "integer", "description": "File size in bytes" },
+                            "size_formatted": { "type": "string" },
+                            "mime_type": { "type": "string" },
+                            "dimensions": {
+                              "type": "object",
+                              "nullable": true,
+                              "properties": {
+                                "width": { "type": "integer" },
+                                "height": { "type": "integer" }
+                              }
                             }
                           }
+                        },
+                        "processing_time": { "type": "integer" },
+                        "post": {
+                          "type": "object",
+                          "properties": {
+                            "code": { "type": "string" },
+                            "url": { "type": "string", "description": "Share page URL" },
+                            "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] }
+                          }
                         }
                       }
                     },
-                    "failed": {
-                      "type": "array",
-                      "nullable": true,
-                      "description": "Files that failed validation. Only present when at least one file failed.",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "index": { "type": "integer", "description": "Original position in the request (0-based)" },
-                          "error": { "type": "string" },
-                          "status": { "type": "string", "enum": ["failed"] }
-                        }
-                      }
-                    },
-                    "processing_time": { "type": "integer", "description": "Server-side processing time in milliseconds" },
-                    "post": {
+                    {
                       "type": "object",
-                      "description": "Generated post metadata. Shape depends on upload mode.",
+                      "description": "Multi-file response",
                       "properties": {
-                        "code": { "type": "string", "description": "Album share code (album mode only)" },
-                        "url": { "type": "string", "description": "Album share URL (album mode only)" },
-                        "postPrivacy": { "type": "string" },
-                        "isAlbum": { "type": "boolean" },
-                        "fileCount": { "type": "integer" },
-                        "posts": {
+                        "message": { "type": "string" },
+                        "files": {
                           "type": "array",
-                          "description": "Individual post entries (individual mode only)",
                           "items": {
                             "type": "object",
                             "properties": {
-                              "code": { "type": "string" },
+                              "index": { "type": "integer" },
                               "url": { "type": "string" },
-                              "postPrivacy": { "type": "string" }
+                              "size": { "type": "integer" },
+                              "size_formatted": { "type": "string" },
+                              "mime_type": { "type": "string" },
+                              "status": { "type": "string", "enum": ["success"] },
+                              "dimensions": { "type": "object", "nullable": true, "properties": { "width": { "type": "integer" }, "height": { "type": "integer" } } }
+                            }
+                          }
+                        },
+                        "failed": {
+                          "type": "array",
+                          "nullable": true,
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "index": { "type": "integer" },
+                              "error": { "type": "string" },
+                              "status": { "type": "string", "enum": ["failed"] }
+                            }
+                          }
+                        },
+                        "processing_time": { "type": "integer" },
+                        "post": {
+                          "type": "object",
+                          "description": "Album mode returns `code`/`url`/`isAlbum`/`fileCount`. Individual mode returns `posts` array.",
+                          "properties": {
+                            "code": { "type": "string" },
+                            "url": { "type": "string" },
+                            "postPrivacy": { "type": "string" },
+                            "isAlbum": { "type": "boolean" },
+                            "fileCount": { "type": "integer" },
+                            "posts": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "code": { "type": "string" },
+                                  "url": { "type": "string" },
+                                  "postPrivacy": { "type": "string" }
+                                }
+                              }
                             }
                           }
                         }
                       }
                     }
-                  }
+                  ]
                 }
               }
             }
           },
           "400": {
-            "description": "No files, fewer than 2 files, all files failed, or other validation error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
-              }
-            }
+            "description": "No file, unsupported type, file too large, or all files failed",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
           },
           "401": {
             "description": "Unauthorised",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
           },
           "403": {
             "description": "Account suspended",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "413": {
+            "description": "File exceeds your plan's size limit",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
           },
           "429": {
             "description": "Rate limit exceeded",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
           }
         }
       }

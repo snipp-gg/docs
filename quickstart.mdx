@@ -119,6 +119,20 @@ The response includes a direct URL to your file and a post object with share met
 }
 ```
 
+### Albums
+
+Upload multiple files in one request to create an album. Just add more `-F "file=@..."` fields:
+
+```bash
+curl -X POST "https://api.snipp.gg/upload" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "posttitle: My album" \
+  -F "file=@photo1.png" \
+  -F "file=@photo2.png"
+```
+
+Albums are the default when sending 2+ files. To create separate posts instead, add `-H "x-upload-mode: individual"`.
+
 ### Privacy options
 
 Control who can see your uploads by setting the `postprivacy` header:
