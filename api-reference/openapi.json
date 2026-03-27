@@ -464,6 +464,8 @@
                       "items": {
                         "type": "object",
                         "properties": {
+                          "code": { "type": "string", "nullable": true, "description": "Associated share code when a post exists" },
+                          "isAlbum": { "type": "boolean", "description": "Whether the upload belongs to an album post" },
                           "url": { "type": "string" },
                           "size": { "type": "integer", "description": "File size in bytes" },
                           "size_formatted": { "type": "string", "description": "Human-readable file size (e.g. \"2.50 MB\")" },

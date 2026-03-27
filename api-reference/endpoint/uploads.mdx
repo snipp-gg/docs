@@ -2,3 +2,35 @@
 title: "List uploads"
 openapi: "GET /uploads"
 ---
+
+Use this endpoint to fetch your 30 most recent uploads.
+
+## Behavior
+
+- Returns uploads newest first.
+- Each upload includes `code` for the associated post when one exists.
+- `isAlbum` is `true` when that upload belongs to an album post.
+
+## Example
+
+```bash
+curl -X GET "https://api.snipp.gg/uploads" \
+  -H "api-key: YOUR_API_KEY"
+```
+
+Example response:
+
+```json
+{
+  "uploads": [
+    {
+      "code": "AbCd1234",
+      "isAlbum": true,
+      "url": "https://i.snipp.gg/364836696149458944/16483ec5681c5fc2b5cc08dd49b7dbae",
+      "size": 2487312,
+      "size_formatted": "2.37 MB",
+      "uploaded": "2026-03-27T11:42:18.000Z"
+    }
+  ]
+}
+```
