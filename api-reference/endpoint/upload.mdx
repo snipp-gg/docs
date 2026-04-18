@@ -29,7 +29,7 @@ Upload a single file:
 curl -X POST "https://api.snipp.gg/upload" \
   -H "api-key: YOUR_API_KEY" \
   -H "post-privacy: unlisted" \
-  -H "post-title: My screenshot" \
+  -H "post-title: my gaming POV" \
   -F "file=@screenshot.png"
 ```
 
@@ -39,7 +39,7 @@ Upload an album (2+ files default to album):
 curl -X POST "https://api.snipp.gg/upload" \
   -H "api-key: YOUR_API_KEY" \
   -H "post-privacy: public" \
-  -H "post-title: Vacation photos" \
+  -H "post-title: Game Moderation Evidence" \
   -F "file=@photo1.png" \
   -F "file=@photo2.png" \
   -F "file=@photo3.png"
