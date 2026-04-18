@@ -139,7 +139,7 @@ Control who can see your uploads by setting the `post-privacy` header:
 
 | Value | Visibility |
 |-------|-----------|
-| `private` | Only you can view it |
+| `private` | Only you can view it. Response URLs are signed and expire after 24 hours — re-fetch from `GET /posts/{code}` or `GET /uploads` for a fresh link. |
 | `unlisted` | Anyone with the share link can view it (default) |
 | `public` | Visible to everyone and eligible for the Discover feed |
 

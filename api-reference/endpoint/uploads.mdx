@@ -10,6 +10,7 @@ Use this endpoint to fetch your 30 most recent uploads.
 - Returns uploads newest first.
 - Each upload includes `code` for the associated post when one exists.
 - `isAlbum` is `true` when that upload belongs to an album post.
+- URLs for private uploads are returned as signed URLs with a 24-hour expiry. After that, request the endpoint again for a fresh signed URL.
 
 ## Example
 

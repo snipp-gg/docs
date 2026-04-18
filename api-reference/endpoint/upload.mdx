@@ -20,6 +20,7 @@ Upload 1-9 files in a single request. Every upload automatically creates a post.
 - **1 file** → creates a single post, `post-type` is ignored
 - **2+ files, no header or `album`** → creates one album post containing all files
 - **2+ files, `individual`** → creates a separate post for each file
+- **`post-privacy: private`** → the returned `url` (and any `urls` in albums) is a signed URL with a 24-hour expiry. After it expires, call [`GET /posts/{code}`](/api-reference/endpoint/post) or [`GET /uploads`](/api-reference/endpoint/uploads) to get a fresh signed URL.
 
 ## Examples
 
