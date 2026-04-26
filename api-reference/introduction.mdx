@@ -8,7 +8,15 @@ description: "Base URL, authentication, endpoints, and error handling for the Sn
 All API requests are made to:
 
 ```
-https://api.snipp.gg
+api.snipp.gg
+```
+
+### Smart Routing
+
+For lower-latency uploads, route requests through the global edge network at `zap.snipp.gg` instead. Smart Routing is capped at **100 MB per upload**. Files larger than that must use `api.snipp.gg`.
+
+```
+zap.snipp.gg
 ```
 
 ## Authentication
