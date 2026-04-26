@@ -680,7 +680,7 @@
     "/appendUpload": {
       "post": {
         "summary": "Append to Album",
-        "description": "Add 1 or more files to an existing album post. The post's share code, privacy, title, and description are preserved. Albums cap at 9 files total. Newly added files inherit the post's privacy — if the post is private, returned URLs are signed with a 24-hour expiry. Each new file is auto-moderated; if any file or the post's title/description is flagged, the entire post is quarantined. Requires an API key with upload access permission. You must own the post.",
+        "description": "Add one or more files to an existing album post. The post's share code, privacy, title, and description are preserved. Albums cap at 9 files total. Newly added files inherit the post's privacy. If the post is private, returned URLs are signed with a 24-hour expiry. Each new file is auto-moderated; if any file or the post's title or description is flagged, the entire post is quarantined. Requires an API key with upload access permission. You must own the post.",
         "operationId": "appendUpload",
         "parameters": [
           {
@@ -834,7 +834,7 @@
     "/block": {
       "post": {
         "summary": "Block User",
-        "description": "Block a user by their ID. Blocked users cannot view your profile, posts, or interact with your content. You also cannot view theirs. Idempotent — blocking an already-blocked user succeeds.",
+        "description": "Block a user by their ID. Blocked users cannot view your profile or posts, or interact with your content. You also cannot view theirs. Idempotent: blocking an already-blocked user succeeds.",
         "operationId": "blockUser",
         "requestBody": {
           "required": true,
@@ -876,7 +876,7 @@
     "/unblock": {
       "post": {
         "summary": "Unblock User",
-        "description": "Unblock a user by their ID. Idempotent — unblocking a non-blocked user succeeds.",
+        "description": "Unblock a user by their ID. Idempotent: unblocking a non-blocked user succeeds.",
         "operationId": "unblockUser",
         "requestBody": {
           "required": true,
