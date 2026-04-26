@@ -58,7 +58,7 @@ post = client.get_post("AbCd1234")
 print(post["post"]["url"])
 ```
 
-### `upload(file, privacy="unlisted")`
+### `upload(file, privacy="unlisted", title=None, description=None, post_type=None)`
 
 Upload a file. Accepts a file path string, bytes, or a file-like object.
 
@@ -66,9 +66,12 @@ Upload a file. Accepts a file path string, bytes, or a file-like object.
 |-----------|------|-------------|
 | `file` | `str \| bytes \| BinaryIO` | File path, raw bytes, or file object. |
 | `privacy` | `str` | `"public"`, `"unlisted"`, or `"private"`. |
+| `title` | `str \| None` | Optional post title (max 30 chars). |
+| `description` | `str \| None` | Optional post description (max 200 chars). |
+| `post_type` | `str \| None` | `"album"` (default) or `"individual"`. Only applies when uploading two or more files. |
 
 ```python
-result = client.upload("image.png", privacy="unlisted")
+result = client.upload("image.png", privacy="unlisted", title="My screenshot")
 print(result["url"])
 ```
 

@@ -47,7 +47,7 @@ Snipp provides official SDK packages so you can skip raw HTTP calls and focus on
     Add to your `Cargo.toml`:
     ```toml
     [dependencies]
-    snipp-rust = "0.1"
+    snipp = "0.1"
     tokio = { version = "1", features = ["full"] }
     ```
   </Tab>
@@ -73,7 +73,7 @@ print(me["user"]["username"])
 ```
 
 ```rust Rust
-use snipp_rust::SnippClient;
+use snipp::SnippClient;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

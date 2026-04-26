@@ -61,6 +61,9 @@ Upload a file. Accepts a `File`, `Blob`, `Buffer`, or `Uint8Array`.
 |--------|------|-------------|
 | `privacy` | `"public" \| "unlisted" \| "private"` | Visibility of the upload. |
 | `filename` | `string` | Filename sent with the upload (defaults to `"upload"`). |
+| `title` | `string` | Optional post title (max 30 chars). |
+| `description` | `string` | Optional post description (max 200 chars). |
+| `postType` | `"album" \| "individual"` | `album` (default) or `individual`. Only applies when uploading two or more files. |
 
 ```javascript
 import { readFileSync } from "node:fs";

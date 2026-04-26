@@ -18,7 +18,7 @@
   "paths": {
     "/users/{id}": {
       "get": {
-        "summary": "Get user",
+        "summary": "Get User",
         "description": "Retrieve user profile data. Includes badge flags and a `badges` object (ordered as `verified`, `staff`, `partner`, `bugHunterTier`, `translator`, `plus`). For non-self requests, public profile uploads are included by default as `publicUploads`.",
         "operationId": "getUser",
         "parameters": [
@@ -54,7 +54,7 @@
                 },
                 "examples": {
                   "selfProfile": {
-                    "summary": "@me response",
+                    "summary": "@me Response",
                     "value": {
                       "user": {
                         "id": "123456789012345678",
@@ -89,7 +89,7 @@
                     }
                   },
                   "publicProfile": {
-                    "summary": "Public profile response",
+                    "summary": "Public Profile Response",
                     "value": {
                       "user": {
                         "id": "987654321098765432",
@@ -165,7 +165,7 @@
     },
     "/posts/{code}": {
       "get": {
-        "summary": "Get post",
+        "summary": "Get Post",
         "description": "Fetch a post by its share code. Returns the post's metadata including its direct file URL, title, description, privacy level, and creation date. Private posts are only visible to the owner.",
         "operationId": "getPost",
         "parameters": [
@@ -217,7 +217,7 @@
                 },
                 "examples": {
                   "post": {
-                    "summary": "Post response",
+                    "summary": "Post Response",
                     "value": {
                       "post": {
                         "code": "AbCd1234",
@@ -271,7 +271,7 @@
     },
     "/upload": {
       "post": {
-        "summary": "Upload file(s)",
+        "summary": "Upload File(s)",
         "description": "Upload 1-9 image or video files. Supports PNG, JPG, WebP, GIF, MP4, MOV, and MKV. Every upload automatically creates a post. When sending multiple files, they are grouped into an album by default. File size limits depend on your plan: Free (100 MB per file), Plus (5 GB per file), Enterprise (10 GB per file).",
         "operationId": "upload",
         "parameters": [
@@ -448,7 +448,7 @@
     },
     "/uploads": {
       "get": {
-        "summary": "List uploads",
+        "summary": "List Uploads",
         "description": "Get your 30 most recent uploads. Requires an API key with upload access permission.",
         "operationId": "listUploads",
         "responses": {
@@ -507,7 +507,7 @@
     },
     "/deleteUpload": {
       "delete": {
-        "summary": "Delete upload",
+        "summary": "Delete Upload",
         "description": "Delete an uploaded file by filename. Requires an API key with upload access permission.",
         "operationId": "deleteUpload",
         "parameters": [
@@ -578,7 +578,7 @@
     },
     "/editUpload": {
       "patch": {
-        "summary": "Edit upload",
+        "summary": "Edit Upload",
         "description": "Edit an existing upload's title, description, or privacy level. Requires an API key with upload access permission. You must own the upload.",
         "operationId": "editUpload",
         "parameters": [
@@ -679,7 +679,7 @@
     },
     "/appendUpload": {
       "post": {
-        "summary": "Append to album",
+        "summary": "Append to Album",
         "description": "Add 1 or more files to an existing album post. The post's share code, privacy, title, and description are preserved. Albums cap at 9 files total. Newly added files inherit the post's privacy — if the post is private, returned URLs are signed with a 24-hour expiry. Each new file is auto-moderated; if any file or the post's title/description is flagged, the entire post is quarantined. Requires an API key with upload access permission. You must own the post.",
         "operationId": "appendUpload",
         "parameters": [
@@ -800,7 +800,7 @@
     },
     "/blocks": {
       "get": {
-        "summary": "List blocked users",
+        "summary": "List Blocked Users",
         "description": "Returns the list of users you have blocked.",
         "operationId": "listBlocks",
         "responses": {
@@ -833,7 +833,7 @@
     },
     "/block": {
       "post": {
-        "summary": "Block user",
+        "summary": "Block User",
         "description": "Block a user by their ID. Blocked users cannot view your profile, posts, or interact with your content. You also cannot view theirs. Idempotent — blocking an already-blocked user succeeds.",
         "operationId": "blockUser",
         "requestBody": {
@@ -875,7 +875,7 @@
     },
     "/unblock": {
       "post": {
-        "summary": "Unblock user",
+        "summary": "Unblock User",
         "description": "Unblock a user by their ID. Idempotent — unblocking a non-blocked user succeeds.",
         "operationId": "unblockUser",
         "requestBody": {
@@ -917,7 +917,7 @@
     },
     "/reports": {
       "post": {
-        "summary": "Report post",
+        "summary": "Report Post",
         "description": "Report a post for violating community guidelines. The post must be public and not your own. Reports are reviewed by the moderation team.",
         "operationId": "reportPost",
         "requestBody": {
@@ -928,7 +928,7 @@
                 "type": "object",
                 "properties": {
                   "code": { "type": "string", "description": "The share code of the post to report" },
-                  "reason": { "type": "string", "description": "Optional reason for the report", "maxLength": 500 }
+                  "reason": { "type": "string", "description": "Optional reason for the report", "maxLength": 200 }
                 },
                 "required": ["code"]
               }
@@ -959,7 +959,7 @@
     },
     "/discover": {
       "get": {
-        "summary": "Discover feed",
+        "summary": "Discover Feed",
         "description": "Get public uploads for the discover feed. Returns up to 50 items. Plus and Enterprise users do not see ads.",
         "operationId": "discover",
         "responses": {

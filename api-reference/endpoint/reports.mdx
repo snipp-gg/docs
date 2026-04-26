@@ -27,7 +27,7 @@ Submit a report for a post using its share code. An optional reason can be provi
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `code` | string | Yes | The share code of the post to report |
-| `reason` | string | No | Reason for the report (max 500 characters) |
+| `reason` | string | No | Reason for the report (max 200 characters) |
 
 **Response:**
 
@@ -42,7 +42,7 @@ Submit a report for a post using its share code. An optional reason can be provi
 | Code | Error | When |
 |------|-------|------|
 | `400` | Missing or invalid code | `code` is empty or missing |
-| `400` | Reason too long | `reason` exceeds 500 characters |
+| `400` | Reason too long | `reason` exceeds 200 characters |
 | `403` | Post is already moderated | The post has already been actioned by moderators |
 | `403` | You cannot report your own post | `code` belongs to a post you own |
 | `403` | Author has blocked you | The post author has blocked you |

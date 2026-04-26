@@ -16,14 +16,14 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-snipp-rust = "0.1"
+snipp = "0.1"
 tokio = { version = "1", features = ["full"] }
 ```
 
 ## Getting Started
 
 ```rust
-use snipp_rust::SnippClient;
+use snipp::SnippClient;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -45,7 +45,7 @@ All methods are `async` and return `Result<T, SnippError>`.
 Fetch a user by ID. Pass `"@me"` for the authenticated user.
 
 ```rust
-use snipp_rust::GetUserOptions;
+use snipp::GetUserOptions;
 
 // Without options
 let user = client.get_user("@me", None).await?;
@@ -67,15 +67,20 @@ let post = client.get_post("AbCd1234").await?;
 println!("{:?}", post.post.url);
 ```
 
-### `upload(path, privacy)`
+### `upload(path, options)`
 
 Upload a file from disk.
 
 ```rust
-use snipp_rust::Privacy;
+use snipp::{Privacy, UploadOptions};
 
-let result = client.upload("image.png", Some(Privacy::Unlisted)).await?;
-println!("{}", result.url);
+let opts = UploadOptions {
+    privacy: Some(Privacy::Unlisted),
+    title: Some("My screenshot".into()),
+    ..Default::default()
+};
+let result = client.upload("image.png", Some(opts)).await?;
+println!("{}", result.url.unwrap_or_default());
 ```
 
 ### `list_uploads()`
@@ -91,7 +96,7 @@ let uploads = client.list_uploads().await?;
 Edit an existing upload's title, description, or privacy.
 
 ```rust
-use snipp_rust::{EditUploadOptions, Privacy};
+use snipp::{EditUploadOptions, Privacy};
 
 let opts = EditUploadOptions {
     title: Some("New title".into()),
