@@ -93,8 +93,7 @@
               "api-reference/endpoint/uploads",
               "api-reference/endpoint/edit",
               "api-reference/endpoint/append",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/discover"
+              "api-reference/endpoint/delete"
             ]
           }
         ]

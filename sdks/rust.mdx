@@ -128,38 +128,6 @@ Delete an upload by its filename.
 client.delete_upload("a3f7b2c91d4e8f0612ab34cd56ef7890.png").await?;
 ```
 
-### `discover()`
-
-Browse public uploads from the community.
-
-```rust
-let feed = client.discover().await?;
-```
-
-### `list_blocks()`
-
-List the users you have blocked.
-
-```rust
-let blocks = client.list_blocks().await?;
-```
-
-### `block_user(target_id)`
-
-Block a user by their ID.
-
-```rust
-client.block_user("123456789012345678").await?;
-```
-
-### `unblock_user(target_id)`
-
-Unblock a user by their ID.
-
-```rust
-client.unblock_user("123456789012345678").await?;
-```
-
 ## Error Handling
 
 All errors are returned as `SnippError`, which covers API errors, HTTP errors, deserialization failures, and IO errors.

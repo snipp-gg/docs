@@ -18,7 +18,6 @@ Rate limits protect Snipp from abuse and keep performance consistent for everyon
 | `PATCH /editUpload` | 20 requests | Per 30 seconds |
 | `POST /appendUpload` | 10 requests | Per minute |
 | `DELETE /deleteUpload` | 20 requests | Per 30 seconds |
-| `GET /discover` | No limit | |
 | `POST /reports` | 3 requests | Per minute |
 
 `POST /upload` also has an abuse safeguard. More than 8 uploads per second triggers a temporary suspension of upload access for your account.
@@ -29,12 +28,19 @@ The Relay API matches the limits above for shared endpoints, with these addition
 
 | Endpoint | Limit | Window |
 |----------|-------|--------|
+| `GET /discover` | No limit | |
 | `GET /blocks` | No limit | |
 | `POST /block` | 10 requests | Per minute |
 | `POST /unblock` | 10 requests | Per minute |
 | `PATCH /profile` | 10 requests | Per minute |
 | `POST /profile/avatar` | 10 requests | Per minute |
 | `POST /profile/banner` | 10 requests | Per minute |
+| `POST /like` | 30 requests | Per minute |
+| `GET /comments` | No limit | |
+| `POST /comment` | 5 requests | Per minute |
+| `DELETE /comment` | 5 requests | Per minute |
+
+`GET /posts/{code}` and `GET /discover` on Relay automatically count views per post. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour.
 
 See [Relay](/concepts/relay) for what Relay covers and how to authenticate.
 

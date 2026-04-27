@@ -120,38 +120,6 @@ Delete an upload by its filename.
 client.delete_upload("a3f7b2c91d4e8f0612ab34cd56ef7890.png")
 ```
 
-### `discover()`
-
-Browse public uploads from the community.
-
-```python
-feed = client.discover()
-```
-
-### `list_blocks()`
-
-List the users you have blocked.
-
-```python
-blocks = client.list_blocks()
-```
-
-### `block_user(target_id)`
-
-Block a user by their ID.
-
-```python
-client.block_user("123456789012345678")
-```
-
-### `unblock_user(target_id)`
-
-Unblock a user by their ID.
-
-```python
-client.unblock_user("123456789012345678")
-```
-
 ## Error Handling
 
 All API errors raise a `SnippError` with `status` and `message` attributes.

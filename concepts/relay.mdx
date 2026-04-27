@@ -5,7 +5,7 @@ description: "The Relay API powers full Snipp account features for first-party c
 
 ## Overview
 
-Relay is a separate Snipp API geared toward the full user experience. It mirrors the public API for uploads, posts, and discovery, and adds account-level features such as profile editing, avatar and banner uploads, and blocking other users.
+Relay is a separate Snipp API geared toward the full user experience. It mirrors the public API for uploads and posts, and adds the discover feed, likes, comments, blocking, profile editing, avatar and banner uploads, and view counting.
 
 Relay is intended for first-party clients (for example, the Snipp mobile app). The public API at `api.snipp.gg` remains the right choice for third-party integrations and SDKs.
 
@@ -31,12 +31,25 @@ Relay supports every endpoint listed in the [API Overview](/api-reference/introd
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
+| `GET` | `/discover` | Browse public uploads from the community. Returns up to 50 items. Plus and Enterprise users do not see ads. |
 | `GET` | `/blocks` | List your blocked users. |
 | `POST` | `/block` | Block a user by ID. |
 | `POST` | `/unblock` | Unblock a user by ID. |
+| `POST` | `/like` | Toggle a like on a post. Returns the new like state and total like count. |
+| `GET` | `/comments` | List comments on a post. Pass `shareCode` as a query parameter or header. |
+| `POST` | `/comment` | Add a comment to a post. Body: `{ "shareCode": "...", "text": "..." }`. |
+| `DELETE` | `/comment` | Delete a comment by ID. Body: `{ "shareCode": "...", "commentId": "..." }`. |
 | `PATCH` | `/profile` | Update your profile fields (bio, nickname, username, email, socials, embed settings, avatar URL, banner URL). |
 | `POST` | `/profile/avatar` | Upload a new avatar. The image is square-cropped and stored under `avatars/{userId}/`. |
 | `POST` | `/profile/banner` | Upload a new banner. Stored under `banners/{userId}/`. |
+
+## View Counting
+
+Relay does not expose a dedicated view endpoint. Views increment automatically when a viewer hits `GET /posts/{code}` or `GET /discover` on Relay.
+
+To prevent inflation, views are deduplicated per IP and post: an IP can contribute up to 3 counted views per post per hour. Views are only counted on public, non-moderated posts.
+
+The `GET /posts/{code}` response includes `views`, `likeCount`, `liked` (whether the requester has liked the post), and `commentCount`.
 
 ## Behavior
 
@@ -46,6 +59,9 @@ Relay supports every endpoint listed in the [API Overview](/api-reference/introd
 - `PATCH /profile` rejects avatar or banner URLs that do not point to your own `avatars/{userId}/` or `banners/{userId}/` prefix on the Snipp CDN.
 - Embed settings (custom embed title, description, theme color, small text) are PLUS-only.
 - Blocking is bidirectional in effect. Blocked users cannot see your posts or profile, and you cannot see theirs. Staff accounts are exempt.
+- `POST /like` toggles the like. Calling it twice removes the like.
+- Comments are limited to 200 characters. A post can hold up to 500 comments.
+- Likes and comments are blocked on moderated posts and on private posts you do not own.
 
 ## Rate Limits
 
