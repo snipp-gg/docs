@@ -212,6 +212,9 @@
                         "description": { "type": "string", "nullable": true },
                         "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] },
                         "created": { "type": "string", "format": "date-time", "nullable": true },
+                        "views": { "type": "integer", "description": "Total view count for the post." },
+                        "likeCount": { "type": "integer", "description": "Total likes on the post." },
+                        "commentCount": { "type": "integer", "description": "Total comments on the post." },
                         "file": {
                           "type": "object",
                           "description": "File metadata. May be absent for older uploads.",
@@ -697,7 +700,7 @@
     },
     "/appendUpload": {
       "post": {
-        "summary": "Append to Album",
+        "summary": "Add to Album",
         "description": "Add one or more files to an existing album post (max 9 files total). New files inherit the post's privacy. You must own the post.",
         "operationId": "appendUpload",
         "parameters": [

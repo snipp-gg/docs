@@ -10,6 +10,7 @@ Fetch a post by its share code.
 - Returns the post's metadata including its direct file URL, title, description, privacy, and creation date.
 - Albums (posts with more than one file) include `urls` (the legacy ordered list) and `isAlbum: true`.
 - All posts include a `files` array with `{ index, fileName, url }` for each file. Use `fileName` when calling [`/deleteUpload`](/api-reference/endpoint/delete) to identify a specific file. On albums, `/deleteUpload` removes just that file; on single-file posts it deletes the post.
+- The response includes `views`, `likeCount`, and `commentCount`. Liking and commenting are Relay-only actions; see the [Relay Reference](/relay-reference/introduction) to perform them.
 - Private posts are only visible to the owner. Requests for another user's private post return `404`.
 - URLs for private posts are returned as signed URLs with a 24-hour expiry. After that, request the endpoint again for a fresh signed URL.
 - Moderated posts may still be returned, but their file URL may be unavailable.
