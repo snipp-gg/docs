@@ -75,7 +75,7 @@
                         "bugHunterTier": 0,
                         "suspended": false,
                         "created": "2025-01-01T00:00:00.000Z",
-                        "embed_settings": null,
+                        "customEmbed": null,
                         "badges": {
                           "verified": true,
                           "staff": false,
@@ -110,7 +110,7 @@
                         "bugHunterTier": 1,
                         "suspended": false,
                         "created": "2025-01-01T00:00:00.000Z",
-                        "embed_settings": null,
+                        "customEmbed": null,
                         "badges": {
                           "verified": true,
                           "staff": false,
@@ -921,10 +921,17 @@
           "bugHunterTier": { "type": "integer", "minimum": 0 },
           "suspended": { "type": "boolean" },
           "created": { "type": "string", "format": "date-time", "nullable": true },
-          "embed_settings": {
+          "customEmbed": {
             "type": "object",
             "nullable": true,
-            "additionalProperties": true
+            "description": "PLUS-only custom embed settings for share pages.",
+            "properties": {
+              "title": { "type": "string", "maxLength": 60 },
+              "description": { "type": "string", "maxLength": 200 },
+              "themeColor": { "type": "string", "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$" },
+              "smallText": { "type": "string", "maxLength": 50 }
+            },
+            "additionalProperties": false
           },
           "badges": { "$ref": "#/components/schemas/Badges" }
         },
