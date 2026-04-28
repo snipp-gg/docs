@@ -1,0 +1,20 @@
+---
+title: "Delete Comment"
+openapi: "DELETE /comment"
+---
+
+Delete a comment by ID.
+
+## Behavior
+
+- Only the comment author or the post owner can delete a comment.
+- Returns the post's updated comment list.
+
+## Examples
+
+```bash
+curl -X DELETE "https://relay.snipp.gg/comment" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"shareCode": "AbCd1234", "commentId": "00000000-0000-4000-8000-000000000000"}'
+```

@@ -1,33 +1,21 @@
 ---
-title: "Create or Delete Comment"
+title: "Create Comment"
 openapi: "POST /comment"
 ---
 
-Add or delete a comment on a post.
+Add a comment to a post.
 
 ## Behavior
 
 - Comments are limited to **200 characters**.
 - A post holds up to **500 comments**.
 - Commenting is blocked on moderated posts and on private posts you do not own.
-- Only the comment author or the post owner can delete a comment.
 
 ## Examples
-
-Add a comment:
 
 ```bash
 curl -X POST "https://relay.snipp.gg/comment" \
   -H "relay-key: YOUR_RELAY_KEY" \
   -H "Content-Type: application/json" \
   -d '{"shareCode": "AbCd1234", "text": "Nice shot!"}'
-```
-
-Delete a comment:
-
-```bash
-curl -X DELETE "https://relay.snipp.gg/comment" \
-  -H "relay-key: YOUR_RELAY_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"shareCode": "AbCd1234", "commentId": "00000000-0000-4000-8000-000000000000"}'
 ```
