@@ -4,7 +4,7 @@
   "appearance": {
     "default": "dark",
     "isHidden": false,
-    "strict": true
+    "strict": false
   },
   "background": {
     "color": {
