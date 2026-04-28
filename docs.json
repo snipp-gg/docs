@@ -85,14 +85,29 @@
           {
             "group": "Endpoints",
             "pages": [
-              "api-reference/endpoint/users",
-              "api-reference/endpoint/post",
-              "api-reference/endpoint/upload",
-              "api-reference/endpoint/uploads",
-              "api-reference/endpoint/edit",
-              "api-reference/endpoint/append",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/reports"
+              {
+                "group": "Uploads",
+                "pages": [
+                  "api-reference/endpoint/upload",
+                  "api-reference/endpoint/uploads",
+                  "api-reference/endpoint/edit",
+                  "api-reference/endpoint/append",
+                  "api-reference/endpoint/delete"
+                ]
+              },
+              {
+                "group": "Posts",
+                "pages": [
+                  "api-reference/endpoint/post",
+                  "api-reference/endpoint/reports"
+                ]
+              },
+              {
+                "group": "Users",
+                "pages": [
+                  "api-reference/endpoint/users"
+                ]
+              }
             ]
           }
         ]
@@ -109,25 +124,50 @@
           {
             "group": "Endpoints",
             "pages": [
-              "relay-reference/endpoint/users",
-              "relay-reference/endpoint/post",
-              "relay-reference/endpoint/upload",
-              "relay-reference/endpoint/uploads",
-              "relay-reference/endpoint/edit",
-              "relay-reference/endpoint/append",
-              "relay-reference/endpoint/delete",
-              "relay-reference/endpoint/discover",
-              "relay-reference/endpoint/blocks",
-              "relay-reference/endpoint/block",
-              "relay-reference/endpoint/unblock",
-              "relay-reference/endpoint/like",
-              "relay-reference/endpoint/comments",
-              "relay-reference/endpoint/comment-create",
-              "relay-reference/endpoint/comment-delete",
-              "relay-reference/endpoint/reports",
-              "relay-reference/endpoint/profile",
-              "relay-reference/endpoint/avatar",
-              "relay-reference/endpoint/banner"
+              {
+                "group": "Uploads",
+                "pages": [
+                  "relay-reference/endpoint/upload",
+                  "relay-reference/endpoint/uploads",
+                  "relay-reference/endpoint/edit",
+                  "relay-reference/endpoint/append",
+                  "relay-reference/endpoint/delete"
+                ]
+              },
+              {
+                "group": "Posts",
+                "pages": [
+                  "relay-reference/endpoint/post",
+                  "relay-reference/endpoint/like",
+                  "relay-reference/endpoint/comments",
+                  "relay-reference/endpoint/comment-create",
+                  "relay-reference/endpoint/comment-delete",
+                  "relay-reference/endpoint/reports"
+                ]
+              },
+              {
+                "group": "Users",
+                "pages": [
+                  "relay-reference/endpoint/users",
+                  "relay-reference/endpoint/profile",
+                  "relay-reference/endpoint/avatar",
+                  "relay-reference/endpoint/banner"
+                ]
+              },
+              {
+                "group": "Social",
+                "pages": [
+                  "relay-reference/endpoint/blocks",
+                  "relay-reference/endpoint/block",
+                  "relay-reference/endpoint/unblock"
+                ]
+              },
+              {
+                "group": "Discover",
+                "pages": [
+                  "relay-reference/endpoint/discover"
+                ]
+              }
             ]
           }
         ]
