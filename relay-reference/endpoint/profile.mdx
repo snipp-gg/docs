@@ -13,7 +13,11 @@ Update your profile fields. Send only the fields you want to change.
 - `email` must be a valid email and at most 50 characters.
 - `socials` is an object keyed by `roblox`, `github`, `spotify`, `youtube`, `tiktok`, `X`, `bluesky`, `discord`. Each value must be a URL on the platform's domain.
 - `avatar` and `banner` only accept URLs that point to your own `avatars/{userId}/` or `banners/{userId}/` prefix on the Snipp CDN. Use [`/profile/avatar`](/relay-reference/endpoint/avatar) or [`/profile/banner`](/relay-reference/endpoint/banner) to upload first.
-- `embed_settings` (custom embed title, description, theme color, small text) is PLUS-only.
+- `embed_settings` is PLUS-only. Object fields:
+  - `title` (string, max 60) — embed title template. Supports variables: `%{post_title}%`, `%{post_description}%`, `%{username}%`, `%{nickname}%`.
+  - `description` (string, max 200) — embed description template. Same variables as `title`.
+  - `themeColor` (hex string, e.g. `#F0B100`) — embed accent color.
+  - `smallText` (string, max 50) — site name / small text shown in embed.
 
 ## Examples
 
