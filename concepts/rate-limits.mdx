@@ -18,7 +18,7 @@ Rate limits protect Snipp from abuse and keep performance consistent for everyon
 | `PATCH /editUpload` | 20 requests | Per 30 seconds |
 | `POST /appendUpload` | 10 requests | Per minute |
 | `DELETE /deleteUpload` | 20 requests | Per 30 seconds |
-| `POST /reports` | 3 requests | Per minute |
+| `POST /report` | 3 requests | Per minute |
 
 `POST /upload` also has an abuse safeguard. More than 8 uploads per second triggers a temporary suspension of upload access for your account.
 
